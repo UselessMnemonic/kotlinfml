@@ -1,0 +1,19 @@
+modLoader = "${rootProject.name}"
+loaderVersion = "[${rootProject.version},)"
+license = "${license}"
+
+[[mods]]
+modId = "${rootProject.name}${name}"
+version = "${version}"
+displayName = "${modDisplayName}"
+description = "${description}"
+logoFile = "logo.png"
+authors = "${authors}"
+displayTest = "NONE"
+
+[[dependencies.${rootProject.name}${name}]]
+modId = "minecraft"
+mandatory = true
+versionRange = "${minecraftVersionRange}"
+ordering = "NONE"
+side = "BOTH"
