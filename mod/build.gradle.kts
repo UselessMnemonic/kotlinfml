@@ -1,13 +1,5 @@
-val javaVersion get() = JavaLanguageVersion.of(property("javaVersion") as String)
-val minecraftVersion get() = property("minecraftVersion") as String
-val neoVersion get() = property("neoVersion") as String
-val forgeDependencyVersion get() = "$minecraftVersion-$neoVersion"
-
-version = rootProject.version
-group = rootProject.group
-
 plugins {
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm")
 }
 
 kotlin {
@@ -29,14 +21,14 @@ tasks.processResources {
 }
 
 tasks.jar {
-    archiveBaseName = "${rootProject.name}-${project.name}"
+    archiveBaseName = publicationName
     manifest {
         attributes(
             "Specification-Version" to "1",
             "Specification-Vendor" to "Forge",
-            "Specification-Title" to project.property("modDisplayName"),
+            "Specification-Title" to modDisplayName,
             "Implementation-Version" to project.version,
-            "Implementation-Vendor" to project.property("authors")
+            "Implementation-Vendor" to modAuthors,
         )
     }
 }

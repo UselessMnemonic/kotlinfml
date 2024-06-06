@@ -12,23 +12,20 @@ Bring-your-own Kotlin simply means that client users and server operators can up
 without having to wait for mods to update. `kotlinfml-loader` is written in pure Java, meaning it doesn't depend on any
 particular version of Kotlin.
 
-Mod authors have the benefit of deciding a minimum version Kotlin target for their projects freely, without forcing
+Mod authors have the benefit of freely deciding a minimum version Kotlin target for their projects without forcing
 users to update the mod loader. Kotlin's strong backwards-compatibility ensures that authors and users alike can upgrade
 to more recent versions of Kotlin without breaking older mods.
 
-Mod authors are also free to shade their preferred version of Kotlin for hands-off configuration.
+Mod authors are discouraged from shading Kotlin or its dependencies. Updating to newer versions of Kotlin should be the
+priority.
 
-### Caveats
-Although `kotlinfml-loader` doesn't depend on any version of Kotlin, `kotlinfml-mod` is built with
-[Kotlin 1.9.0](https://kotlinlang.org/docs/releases.html#release-details) to enforce a version floor. This is because
-`kotlinfml-loader` depends on (albeit stable) implementation details of the Kotlin compiler (see
-[`com.uselessmnemonic.kotlinfml.KotlinUtilities`](loader/src/main/java/com/uselessmnemonic/kotlinfml/KotlinUtilities.java)).
+### Caveats (or, The Ugly)
+Although `kotlinfml-loader` doesn't depend on any version of Kotlin, `kotlinfml-mod` and `kotlinfml-extensions` are
+built with [Kotlin 1.9.20](https://kotlinlang.org/docs/releases.html#release-details) to enforce a version floor. This
+is not ideal in a BYO setting, but it encourages mod authors and consumers alike to make upgrading a priority.
 
-Having an effective minimal version enforced in a BYO setting isn't ideal, but it takes the weight off mod developers in
-deciding how many Kotlin features should be expected. Kotlin can continue to be updated without affecting the loader.
-
-`kotlinfml` is meant to be used with NeoForge. Please see the releases section for more information about supported
-NeoForge versions and Java requirements.
+`kotlinfml` is meant to be used with NeoForge. Please see the releases section for more information about NeoForge,
+Minecraft, and Java requirements.
 
 ## Usage
 
@@ -38,7 +35,7 @@ Use `IKotlinMod` in your mod's interface list to mark it as a Kotlin mod:
 @Mod("my_mod")
 object MyMod: IKotlinMod
 ```
-Implementing `IKotlinMod` is necessary for using type safe extensions, DSLs, and utilities. However, it can be safely
+Implementing `IKotlinMod` is necessary for using type safe-extensions, DSLs, and utilities. However, it can be safely
 ignored.
 ### 
 Kotlin mods can be written with the same conventions as Java mods, with additional support for Kotlin object
@@ -93,5 +90,5 @@ fun anotherEvent(event: AnotherEvent) { /* ... */ }
 ```
 
 ### Kotlin DSL
-Useful extensions are shipped in `kotlinfml-extensions`, offered separately from the loader. Authors can shade this
-library into their projects or require the user to have it in their classpath.
+Useful extensions are shipped in `kotlinfml-extensions`, offered separately from the loader. Authors should shade this
+library into their projects and not expect for it to be present in the classpath.

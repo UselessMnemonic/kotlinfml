@@ -1,17 +1,17 @@
 modLoader = "${rootProject.name}"
-loaderVersion = "[${rootProject.version},)"
-license = "${license}"
+loaderVersion = "[${modVersion},)"
+license = "${modLicense}"
 
 [[mods]]
-modId = "${rootProject.name}${name}"
-version = "${version}"
+modId = "${rootProject.name}${project.name}"
+version = "${modVersion}"
 displayName = "${modDisplayName}"
-description = "${description}"
+description = "${modDescription}"
 logoFile = "logo.png"
-authors = "${authors}"
+authors = "${modAuthors}"
 displayTest = "NONE"
 
-[[dependencies.${rootProject.name}${name}]]
+[[dependencies.${rootProject.name}${project.name}]]
 modId = "minecraft"
 mandatory = true
 versionRange = "${minecraftVersionRange}"

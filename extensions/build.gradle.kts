@@ -1,20 +1,10 @@
-val javaVersion get() = JavaLanguageVersion.of(property("javaVersion") as String)
-val minecraftVersion get() = property("minecraftVersion") as String
-val neoVersion get() = property("neoVersion") as String
-val forgeDependencyVersion get() = "$minecraftVersion-$neoVersion"
-val publicationName = "${rootProject.name}-${project.name}"
-
-version = "1.0"
-group = rootProject.group
-
 plugins {
-    signing
-    `maven-publish`
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm")
+    id("com.vanniktech.maven.publish") version "0.28.0"
 }
 
 kotlin {
-    jvmToolchain(javaVersion.asInt())
+    jvmToolchain(project.javaVersion.asInt())
 }
 
 java {
@@ -29,45 +19,32 @@ dependencies {
     compileOnly(project(":loader"))
 }
 
-tasks.jar {
+tasks.withType(Jar::class.java) {
     archiveBaseName = publicationName
 }
 
-publishing {
-    publications {
-        create<MavenPublication>(publicationName) {
-            from(components["java"])
-            artifactId = publicationName
-            pom {
-                name = publicationName
-                description = project.description
-                url = "https://github.com/UselessMnemonic/kotlinfml"
-                licenses {
-                    license {
-                        name = "MIT"
-                        url = "https://github.com/UselessMnemonic/kotlinfml/blob/main/LICENSE.md"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "UselessMnemonic"
-                        name = "Christopher Madrigal"
-                        email = "chrisjmadrigal AT gmail DOT com"
-                    }
-                }
-                scm {
-                    connection = "scm:git:git://github.com/UselessMnemonic/kotlinfml"
-                    url = "https://github.com/UselessMnemonic/kotlinfml"
-                }
+mavenPublishing {
+    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+    pom {
+        name = publicationName
+        description = "Extensions for kotlinfml mods."
+        url = gitUrl
+        licenses {
+            license {
+                name = modLicense
             }
         }
+        developers {
+            developer {
+                id = "UselessMnemonic"
+                name = "Christopher Madrigal"
+                email = "chrisjmadrigal@gmail.com"
+            }
+        }
+        scm {
+            connection = gitConnection
+            url = gitUrl
+        }
     }
-}
-
-signing {
-    val signingKeyId: String? by project
-    val signingKey: String? by project
-    val singingPassword: String? by project
-    useInMemoryPgpKeys(signingKey, signingKeyId, singingPassword)
-    //sign(publishing.publications[publicationName])
 }
